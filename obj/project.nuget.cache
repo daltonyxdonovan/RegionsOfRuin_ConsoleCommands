@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "dgSpecHash": "11BSPEQ1hOswUQ4hFPfyTW/Ibefg3e6TNh4uSDyU15TZ250mKr/Q1+wDA+Q0SA9Ql1Ay4QA3np9XFpxazlMPnQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\dalto\\source\\repos\\RegionsOfRuin_ConsoleCommands\\RegionsOfRuin_ConsoleCommands.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\dalto\\.nuget\\packages\\bepinex.analyzers\\1.0.8\\bepinex.analyzers.1.0.8.nupkg.sha512",
+    "C:\\Users\\dalto\\.nuget\\packages\\bepinex.baselib\\5.4.20\\bepinex.baselib.5.4.20.nupkg.sha512",
+    "C:\\Users\\dalto\\.nuget\\packages\\bepinex.core\\5.4.21\\bepinex.core.5.4.21.nupkg.sha512",
+    "C:\\Users\\dalto\\.nuget\\packages\\bepinex.plugininfoprops\\1.1.0\\bepinex.plugininfoprops.1.1.0.nupkg.sha512",
+    "C:\\Users\\dalto\\.nuget\\packages\\harmonyx\\2.7.0\\harmonyx.2.7.0.nupkg.sha512",
+    "C:\\Users\\dalto\\.nuget\\packages\\microsoft.netframework.referenceassemblies\\1.0.2\\microsoft.netframework.referenceassemblies.1.0.2.nupkg.sha512",
+    "C:\\Users\\dalto\\.nuget\\packages\\microsoft.netframework.referenceassemblies.net35\\1.0.2\\microsoft.netframework.referenceassemblies.net35.1.0.2.nupkg.sha512",
+    "C:\\Users\\dalto\\.nuget\\packages\\mono.cecil\\0.10.4\\mono.cecil.0.10.4.nupkg.sha512",
+    "C:\\Users\\dalto\\.nuget\\packages\\monomod.runtimedetour\\21.12.13.1\\monomod.runtimedetour.21.12.13.1.nupkg.sha512",
+    "C:\\Users\\dalto\\.nuget\\packages\\monomod.utils\\21.12.13.1\\monomod.utils.21.12.13.1.nupkg.sha512",
+    "C:\\Users\\dalto\\.nuget\\packages\\unityengine.modules\\2018.2.18\\unityengine.modules.2018.2.18.nupkg.sha512"
+  ],
+  "logs": []
+}

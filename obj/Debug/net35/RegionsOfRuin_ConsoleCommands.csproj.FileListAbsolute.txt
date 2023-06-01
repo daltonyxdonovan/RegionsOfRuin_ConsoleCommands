@@ -1,0 +1,15 @@
+C:\Users\dalto\source\repos\RegionsOfRuin_ConsoleCommands\bin\Debug\net35\RegionsOfRuin_ConsoleCommands.dll
+C:\Users\dalto\source\repos\RegionsOfRuin_ConsoleCommands\bin\Debug\net35\RegionsOfRuin_ConsoleCommands.pdb
+C:\Users\dalto\source\repos\RegionsOfRuin_ConsoleCommands\obj\Debug\net35\RegionsOfRuin_ConsoleCommands.csproj.AssemblyReference.cache
+C:\Users\dalto\source\repos\RegionsOfRuin_ConsoleCommands\obj\Debug\net35\PluginInfo.cs
+C:\Users\dalto\source\repos\RegionsOfRuin_ConsoleCommands\obj\Debug\net35\RegionsOfRuin_ConsoleCommands.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dalto\source\repos\RegionsOfRuin_ConsoleCommands\obj\Debug\net35\RegionsOfRuin_ConsoleCommands.AssemblyInfoInputs.cache
+C:\Users\dalto\source\repos\RegionsOfRuin_ConsoleCommands\obj\Debug\net35\RegionsOfRuin_ConsoleCommands.AssemblyInfo.cs
+C:\Users\dalto\source\repos\RegionsOfRuin_ConsoleCommands\obj\Debug\net35\RegionsOfRuin_ConsoleCommands.csproj.CoreCompileInputs.cache
+C:\Users\dalto\source\repos\RegionsOfRuin_ConsoleCommands\obj\Debug\net35\RegionsOfRuin_ConsoleCommands.dll
+C:\Users\dalto\source\repos\RegionsOfRuin_ConsoleCommands\obj\Debug\net35\RegionsOfRuin_ConsoleCommands.pdb
+C:\Users\dalto\source\repos\RegionsOfRuin_ConsoleCommands\bin\Debug\net35\Assembly-CSharp.dll
+C:\Users\dalto\source\repos\RegionsOfRuin_ConsoleCommands\bin\Debug\net35\UnityEngine.UI.dll
+C:\Users\dalto\source\repos\RegionsOfRuin_ConsoleCommands\bin\Debug\net35\Rewired_Core.dll
+C:\Users\dalto\source\repos\RegionsOfRuin_ConsoleCommands\bin\Debug\net35\Assembly-CSharp-firstpass.dll
+C:\Users\dalto\source\repos\RegionsOfRuin_ConsoleCommands\obj\Debug\net35\RegionsOfRuin_ConsoleCommands.csproj.CopyComplete
