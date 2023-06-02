@@ -26,6 +26,7 @@ namespace RegionsOfRuin_ConsoleCommands
 
         bool gui_ready = false;
         bool selected = false;
+        interactionInfo interactionInfo;
 
         private void Awake()
         {
@@ -55,40 +56,33 @@ namespace RegionsOfRuin_ConsoleCommands
             {
                 if (canvas == null)
                 {
-                    //create a new canvas
-                    canvas = GameObject.Find("Canvas(Clone)");
+                    command_text = new GameObject("command_text");
+                    command_text.AddComponent<interactionInfo>();
+                    interactionInfo = command_text.GetComponentInChildren<interactionInfo>();
+
+                    info = interactionInfo.infoText.gameObject;
+                    origin = info.transform.position;
                     
                     int screen_width = Screen.width;
                     int screen_height = Screen.height;
-
-                    //do the same for command_text
-                    command_text = new GameObject("command_text");
-                    command_text.AddComponent<interactionInfo>();
+                    
                     this.info = this.infoText.gameObject;
                     this.infoText.color = Color.white;
                     this.origin = new Vector3((int)screen_width/2, screen_height-(int)screen_height/8, 0);
 
-                    command_text.transform.SetParent(canvas.transform);
-                    interactionInfo interactionInfo = command_text.GetComponentInChildren<interactionInfo>();
-
-                    GameObject info = interactionInfo.infoText.gameObject;
-                    Vector3 origin = info.transform.position;
-
+                    
+                    //set command_text's position to _our_ origin
+                    interactionInfo.infoText.transform.position = this.origin;
+                    interactionInfo.infoText.text = "Press / for commands";
                     
 
-                    
-
-                    
                     selected = false;
                     command_string = "";
-                    
-                    
-                    
-
-                    
+                    Logger.LogInfo($"");
                 }
                 else
                 {
+                    command_text.transform.SetParent(canvas.transform);
                     //if canvas isn't null, we can attempt to access values and stuff, but it's still unsafe in title
                     if (popup_timer > 0)
                     {
@@ -182,6 +176,7 @@ namespace RegionsOfRuin_ConsoleCommands
 
                 
             }
+            command_text.GetComponentInChildren<interactionInfo>().inform("Press / for commands", Color.white);
         }
     }
 }
