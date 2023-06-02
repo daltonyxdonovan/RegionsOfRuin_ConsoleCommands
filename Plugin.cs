@@ -66,9 +66,9 @@ namespace RegionsOfRuin_ConsoleCommands
                     int screen_width = Screen.width;
                     int screen_height = Screen.height;
                     
-                    this.info = this.infoText.gameObject;
-                    this.infoText.color = Color.white;
-                    this.origin = new Vector3((int)screen_width/2, screen_height-(int)screen_height/8, 0);
+                    interactionInfo.info = this.infoText.gameObject;
+                    interactionInfo.infoText.color = Color.white;
+                    interactionInfo.origin = new Vector3((int)screen_width/2, screen_height-(int)screen_height/8, 0);
 
                     
                     //set command_text's position to _our_ origin
