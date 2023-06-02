@@ -9,12 +9,9 @@ namespace RegionsOfRuin_ConsoleCommands
     {
         GameObject player;
         GameObject canvas;
-        Text popup_text;
         GameObject command_text;
         public GameObject clear;
         public Text clearText;
-        private Vector2 origin;
-        private float timer = 1.25f;
         private GameObject info;
         public Text infoText;
 
@@ -70,16 +67,11 @@ namespace RegionsOfRuin_ConsoleCommands
                     //set command_text's parent to canvas
                     canvas = GameObject.Find("Canvas(Clone)");
                     command_text.transform.SetParent(canvas.transform);
-
-
-                    Logger.LogInfo($"command_text is {command_text}");
                     command_text.AddComponent<customInteractInfo>();
-                    Logger.LogInfo($"command_text has {command_text.GetComponentInChildren<customInteractInfo>()}");
                     interactionInfo = command_text.GetComponentInChildren<customInteractInfo>();
-                    Logger.LogInfo($"interactionInfo is {interactionInfo}");
 
                     interactionInfo.infoText.text = "Press / for commands";
-                    Logger.LogInfo($"interactionInfo.infoText.text is {interactionInfo.infoText.text}");
+
                     popup_timer = 99999;
 
                     selected = false;
@@ -87,6 +79,12 @@ namespace RegionsOfRuin_ConsoleCommands
                     Logger.LogInfo($"interaction text is {interactionInfo.infoText.text}");
                     //set a font
                     command_text.GetComponentInChildren<customInteractInfo>().infoText.font = Font.CreateDynamicFontFromOSFont("Arial", 14);
+                    //get window width and height from player prefs
+                    float screenWidth = Screen.currentResolution.width;
+                    float screenHeight = Screen.currentResolution.height;
+                    command_text.transform.position = new Vector3(0, 0, 0);
+                    command_text.transform.localPosition = new Vector3(screenWidth/2, screenHeight-(screenHeight/8), 0);
+
                     
                 }
                 else
@@ -162,6 +160,198 @@ namespace RegionsOfRuin_ConsoleCommands
                             
                         
                         Log("All achievements unlocked!");
+                    }
+
+                    if (selected)
+                    {
+                        //I've tried like four different ways to do this without an if/else block for the _entire alphabet and all 10 numbers_, it's already taken too long so fine I guess here we go-
+                        
+                        if (Input.GetKeyDown(KeyCode.A))
+                        {
+                            command_string += "a";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.B))
+                        {
+                            command_string += "b";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.C))
+                        {
+                            command_string += "c";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.D))
+                        {
+                            command_string += "d";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.E))
+                        {
+                            command_string += "e";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.F))
+                        {
+                            command_string += "f";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.G))
+                        {
+                            command_string += "g";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.H))
+                        {
+                            command_string += "h";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.I))
+                        {
+                            command_string += "i";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.J))
+                        {
+                            command_string += "j";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.K))
+                        {
+                            command_string += "k";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.L))
+                        {
+                            command_string += "l";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.M))
+                        {
+                            command_string += "m";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.N))
+                        {
+                            command_string += "n";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.O))
+                        {
+                            command_string += "o";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.P))
+                        {
+                            command_string += "p";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Q))
+                        {
+                            command_string += "q";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.R))
+                        {
+                            command_string += "r";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.S))
+                        {
+                            command_string += "s";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.T))
+                        {
+                            command_string += "t";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.U))
+                        {
+                            command_string += "u";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.V))
+                        {
+                            command_string += "v";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.W))
+                        {
+                            command_string += "w";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.X))
+                        {
+                            command_string += "x";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Y))
+                        {
+                            command_string += "y";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Z))
+                        {
+                            command_string += "z";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Alpha0))
+                        {
+                            command_string += "0";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Alpha1))
+                        {
+                            command_string += "1";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Alpha2))
+                        {
+                            command_string += "2";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Alpha3))
+                        {
+                            command_string += "3";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Alpha4))
+                        {
+                            command_string += "4";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Alpha5))
+                        {
+                            command_string += "5";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Alpha6))
+                        {
+                            command_string += "6";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Alpha7))
+                        {
+                            command_string += "7";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Alpha8))
+                        {
+                            command_string += "8";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Alpha9))
+                        {
+                            command_string += "9";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Space))
+                        {
+                            command_string += " ";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                        }
+
                     }
                 }
             }

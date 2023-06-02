@@ -25,4 +25,13 @@
 		  <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Regions of Ruin\Regions of Ruin_Data\Managed\Assembly-CSharp.dll</HintPath>
 	  </Reference>
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="move_to_game.py" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="python bin/Debug/net35/move_to_game.py" />
+  </Target>
+
 </Project>

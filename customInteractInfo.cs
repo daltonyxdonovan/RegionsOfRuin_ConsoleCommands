@@ -52,9 +52,18 @@ public class customInteractInfo : MonoBehaviour
         
 
 		this.infoText.color = Color.white;
-		this.origin = new Vector3(700, 700, 0);
+        int screenWidth = Screen.width;
+        int screenHeight = Screen.height;
+		this.origin = new Vector3(0,0, 0);
         //set a font
         this.infoText.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
+        //set overflow to true and word-wrapping to false
+        this.infoText.fontSize = 40;
+        this.infoText.horizontalOverflow = HorizontalWrapMode.Overflow;
+        this.infoText.verticalOverflow = VerticalWrapMode.Overflow;
+        this.infoText.resizeTextForBestFit = false;
+        this.infoText.resizeTextMaxSize = 0;
+        
 	}
 
 	// Token: 0x06000524 RID: 1316 RVA: 0x000469D8 File Offset: 0x00044DD8
