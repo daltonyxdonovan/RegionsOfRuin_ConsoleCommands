@@ -371,7 +371,53 @@ namespace RegionsOfRuin_ConsoleCommands
                             Log($"Set {choice} as reputation");
                         }
 
+                        if (command_string.StartsWith("/devtools"))
+                        {
+                            DwarfController.devTools = true;
+                            Log($"Dev tools enabled! Godspeed, spiderman");
+                        }
 
+                        if (command_string.StartsWith("/timeup"))
+                        {
+                            Time.timeScale += 0.5f;
+                        }
+
+                        if (command_string.StartsWith("/timedown"))
+                        {
+                            Time.timeScale -= 0.5f;
+                        }
+
+                        if (command_string.StartsWith("/addworker"))
+                        {
+                            string[] strings = command_string.Split(' ');
+                            int choice = int.Parse(strings[1]);
+                            for (int i = 0; i < choice; i++)
+                            {
+                                workerHandler.addWorker(1);
+                            }
+                            Log($"Added {choice} workers");
+                        }
+
+                        if (command_string.StartsWith("/kill"))
+                        {
+                            AIScript[] array = UnityEngine.Object.FindObjectsOfType(typeof(AIScript)) as AIScript[];
+                            for (int l = 0; l < array.Length; l++)
+                            {
+                                if (array[l].alliance > 0)
+                                {
+                                    array[l].health = 0;
+                                }
+                            }
+                        }
+
+                        if (command_string.StartsWith("/chest"))
+                        {
+                            GameObject original = (GameObject)Resources.Load("Prefabs/chestSpawn");
+                            Vector3 position5 = base.transform.position;
+                            position5.y += 1.5f;
+                            position5.x += UnityEngine.Random.Range(-1f, 1f);
+                            original = UnityEngine.Object.Instantiate<GameObject>(original, position5, Quaternion.identity);
+                        }
 
 
 
