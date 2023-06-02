@@ -20,7 +20,8 @@ namespace RegionsOfRuin_ConsoleCommands
 
         int ticker_playerfind = 0;
         int popup_timer = 0;
-
+        bool daytime = false;
+        bool nighttime = false;
         bool gui_ready = false;
         bool selected = false;
         customInteractInfo interactionInfo;
@@ -107,27 +108,42 @@ namespace RegionsOfRuin_ConsoleCommands
                 }
                 else
                 {
+                    //overrides go here
+                    if (daytime)
+                    {
+                        dayCycleController day_cycle_controller = FindObjectOfType<dayCycleController>();
+                        day_cycle_controller.time = 1000;
+                    }
+                    if (nighttime)
+                    {
+                        dayCycleController day_cycle_controller = FindObjectOfType<dayCycleController>();
+                        day_cycle_controller.time = 400;
+                    }
+
+                        
+
+
                     //if canvas is not the parent of command_text, set it to be
                     if (command_text.transform.parent != canvas.transform)
                         command_text.transform.SetParent(canvas.transform);
                     
                     float screenWidth = PlayerPrefs.GetFloat("screenWidth");
                     float screenHeight = PlayerPrefs.GetFloat("screenHeight");
-                    //I'm just trying to get the resolution of the window, and not the screen. WHY IS IT THIS HARD
+                    //I'm just trying to get the resolution of the window, and not the screen. WHY IS IT THIS HARD. screw it, people play fullscreen or native resolution at least, right?
                     float windowWidth = Screen.width;
                     float windowHeight = Screen.height;
                     float textWidth = command_text.GetComponentInChildren<customInteractInfo>().infoText.GetComponent<RectTransform>().rect.width;
                     command_text.transform.position = new Vector3(0, 0, 0);
                     command_text.transform.localPosition = new Vector3(-200,-500,0);
                     //command_text.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 400);
-                    //if canvas isn't null, we can attempt to access values and stuff, but it's still unsafe in title
+                    //if canvas isn't null, we can attempt to access values and stuff, but it's still unsafe in title without a check
                     if (popup_timer > 0)
                     {
                         popup_timer--;
                         if (popup_timer == 0)
                         {
                             
-                            command_text.GetComponentInChildren<customInteractInfo>().infoText.color = Color.red;
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.color = Color.white;
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = "";
                         }
                     }
@@ -146,6 +162,7 @@ namespace RegionsOfRuin_ConsoleCommands
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = "/";
                             command_string = "/";
                         }
+                        popup_timer = 400;
                     }
 
                     if (Input.GetKeyDown(KeyCode.Backspace))
@@ -172,8 +189,39 @@ namespace RegionsOfRuin_ConsoleCommands
                     }
 
                     if (Input.GetKeyDown(KeyCode.Return))
-                    {
+                    {   
+                        popup_timer = 0;
                         
+                        //command parsing goes here
+
+                        if (command_string.StartsWith("/addm"))
+                        {
+                            string[] strings = command_string.Split(' ');
+                            int choice = int.Parse(strings[1]);
+                            DwarfController.self.getCoin(choice);
+                            Log($"Added {choice} money");
+                        }
+
+                        if (command_string.StartsWith("/moon"))
+                        {
+                            nighttime = true;
+                            daytime = false;
+                        }
+
+                        if (command_string.StartsWith("/sun"))
+                        {
+                            nighttime = false;
+                            daytime = true;
+                        }
+
+
+
+
+
+
+                        selected = false;
+                        command_text.GetComponentInChildren<customInteractInfo>().infoText.text = "Press / for commands";
+                        command_string = "";
                     }
 
                     if (selected)
@@ -184,186 +232,223 @@ namespace RegionsOfRuin_ConsoleCommands
                         {
                             command_string += "a";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.B))
                         {
                             command_string += "b";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.C))
                         {
                             command_string += "c";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.D))
                         {
                             command_string += "d";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.E))
                         {
                             command_string += "e";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.F))
                         {
                             command_string += "f";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.G))
                         {
                             command_string += "g";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.H))
                         {
                             command_string += "h";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.I))
                         {
                             command_string += "i";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.J))
                         {
                             command_string += "j";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.K))
                         {
                             command_string += "k";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.L))
                         {
                             command_string += "l";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.M))
                         {
                             command_string += "m";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.N))
                         {
                             command_string += "n";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.O))
                         {
                             command_string += "o";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.P))
                         {
                             command_string += "p";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.Q))
                         {
                             command_string += "q";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.R))
                         {
                             command_string += "r";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.S))
                         {
                             command_string += "s";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.T))
                         {
                             command_string += "t";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.U))
                         {
                             command_string += "u";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.V))
                         {
                             command_string += "v";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.W))
                         {
                             command_string += "w";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.X))
                         {
                             command_string += "x";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.Y))
                         {
                             command_string += "y";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.Z))
                         {
                             command_string += "z";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.Alpha0))
                         {
                             command_string += "0";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.Alpha1))
                         {
                             command_string += "1";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.Alpha2))
                         {
                             command_string += "2";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.Alpha3))
                         {
                             command_string += "3";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.Alpha4))
                         {
                             command_string += "4";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.Alpha5))
                         {
                             command_string += "5";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.Alpha6))
                         {
                             command_string += "6";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.Alpha7))
                         {
                             command_string += "7";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.Alpha8))
                         {
                             command_string += "8";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.Alpha9))
                         {
                             command_string += "9";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
                         else if (Input.GetKeyDown(KeyCode.Space))
                         {
                             command_string += " ";
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
+                            popup_timer = 400;
                         }
 
                     }
@@ -377,19 +462,10 @@ namespace RegionsOfRuin_ConsoleCommands
             Logger.LogInfo(message);
             if (canvas != null)
             {
-                
-                //      vvv      this is the way the game does it's popup text, so we'll do it the same way but get rid of the alpha manipulation
-                //      vvv      longer than 2 seconds lol
-                //  interactionInfo.inform(message, Color.red);
-                
-                command_text.GetComponentInChildren<customInteractInfo>().infoText.color = Color.red;
-                command_text.GetComponentInChildren<customInteractInfo>().infoText.text = message;
-
+                interactionInfo iInfo = FindObjectOfType<interactionInfo>();
+                iInfo.inform(message, Color.green);
                 popup_timer = 400;
-
-                
             }
-           
         }
     }
 }
