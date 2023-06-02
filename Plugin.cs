@@ -24,6 +24,9 @@ namespace RegionsOfRuin_ConsoleCommands
         bool nighttime = false;
         bool gui_ready = false;
         bool selected = false;
+        bool strengthmod = false;
+        int strengthchoice = 0;
+        bool nowounds = false;
         customInteractInfo interactionInfo;
 
         private void Awake()
@@ -119,8 +122,13 @@ namespace RegionsOfRuin_ConsoleCommands
                         dayCycleController day_cycle_controller = FindObjectOfType<dayCycleController>();
                         day_cycle_controller.time = 400;
                     }
-
-                        
+                    if (strengthmod)
+                        DwarfController.strength = strengthchoice;
+                    if (nowounds)
+                    {
+                        DwarfController.woundsStatic = string.Empty;
+		                DwarfController.bigwoundsStatic = string.Empty;
+                    }
 
 
                     //if canvas is not the parent of command_text, set it to be
@@ -194,7 +202,7 @@ namespace RegionsOfRuin_ConsoleCommands
                         
                         //command parsing goes here
 
-                        if (command_string.StartsWith("/addm"))
+                        if (command_string.StartsWith("/addmoney"))
                         {
                             string[] strings = command_string.Split(' ');
                             int choice = int.Parse(strings[1]);
@@ -213,6 +221,92 @@ namespace RegionsOfRuin_ConsoleCommands
                             nighttime = false;
                             daytime = true;
                         }
+
+                        if (command_string.StartsWith("/strength"))
+                        {
+                            //still working on it
+                            string[] strings = command_string.Split(' ');
+                            int choice = int.Parse(strings[1]);
+                            strengthmod = true;
+                            strengthchoice = choice;
+                            DwarfController.strength = choice;
+                            Log($"Added {choice} strength");
+                        }
+
+                        if (command_string.StartsWith("/addxp"))
+                        {
+                            string[] strings = command_string.Split(' ');
+                            int choice = int.Parse(strings[1]);
+                            DwarfController.self.gainExp(choice);
+                            Log($"Added {choice} xp");
+                        }
+
+                        if (command_string.StartsWith("/setxp"))
+                        {
+                            string[] strings = command_string.Split(' ');
+                            int choice = int.Parse(strings[1]);
+                            DwarfController.experience=choice;
+                            Log($"Set {choice} as xp");
+                        }
+
+                        if (command_string.StartsWith("/setmaxhp"))
+                        {
+                            string[] strings = command_string.Split(' ');
+                            int choice = int.Parse(strings[1]);
+                            DwarfController.maxHealth = choice;
+                            Log($"Set {choice} as max hp");
+                        }
+                        
+                        if (command_string.StartsWith("/sethp"))
+                        {
+                            string[] strings = command_string.Split(' ');
+                            int choice = int.Parse(strings[1]);
+                            DwarfController.currentHealth = choice;
+                            Log($"Set {choice} as hp");
+                        }
+
+                        if (command_string.StartsWith("/heal"))
+                        {
+                            string[] strings = command_string.Split(' ');
+                            if (strings.Length > 1)
+                            {
+                                int choice = int.Parse(strings[1]);
+                                DwarfController.currentHealth = DwarfController.currentHealth + choice;
+                                Log($"Healed {choice} hp");
+                            }
+                            else
+                            {
+                                DwarfController.currentHealth = DwarfController.maxHealth;
+                                Log($"Healed to max hp");
+                            }
+                            
+                        }
+
+                        if (command_string.StartsWith("/dexterity"))
+                        {
+                            string[] strings = command_string.Split(' ');
+                            int choice = int.Parse(strings[1]);
+                            DwarfController.dexterity = choice;
+                            Log($"Set {choice} as dexterity");
+                        }
+
+                        if (command_string.StartsWith("/constitution"))
+                        {
+                            string[] strings = command_string.Split(' ');
+                            int choice = int.Parse(strings[1]);
+                            DwarfController.constitution = choice;
+                            Log($"Set {choice} as constitution");
+                        }
+
+                        if (command_string.StartsWith("/nowounds"))
+                        {
+                            string[] strings = command_string.Split(' ');
+                            bool choice = bool.Parse(strings[1]);
+                            
+                            nowounds = choice;
+                            Log($"Set nowounds {choice}");
+                        }
+
 
 
 
@@ -456,7 +550,44 @@ namespace RegionsOfRuin_ConsoleCommands
             }
         }
         
-    
+        public static void ResetDwarf()
+        {
+            DwarfController.coins = 0;
+            DwarfController.overallLevel = 1;
+            DwarfController.totalGoldEarned = 0;
+            DwarfController.totalDamageDealt = 0;
+            DwarfController.totalDamageTaken = 0;
+            DwarfController.totalExperienceGained = 0f;
+            DwarfController.experience = 0f;
+            DwarfController.experiencePoints = 0;
+            DwarfController.experienceToNextLevel = 300f;
+            DwarfController.currentHealth = 100f;
+            DwarfController.maxHealth = 100f;
+            DwarfController.strength = 0;
+            DwarfController.dexterity = 0;
+            DwarfController.constitution = 0;
+            DwarfController.axes = 2;
+            DwarfController.weaponWeight = 0;
+            DwarfController.wornMinDamage = 0;
+            DwarfController.wornMaxDamage = 0;
+            DwarfController.weaponWeight = 1;
+            DwarfController.headCondition = 0;
+            DwarfController.headConditionMax = 0;
+            DwarfController.torsoCondition = 0;
+            DwarfController.torsoConditionMax = 0;
+            DwarfController.leftCondition = 0;
+            DwarfController.leftConditionMax = 0;
+            DwarfController.rightCondition = 0;
+            DwarfController.rightConditionMax = 0;
+            DwarfController.shieldCondition = 0;
+            DwarfController.shieldConditionMax = 0;
+            DwarfController.woundsStatic = string.Empty;
+            DwarfController.bigwoundsStatic = string.Empty;
+            gameStatsLog.reputation = 0;
+            sceneSaveData.caches = new int[100, 100];
+            sceneSaveData.npcs = new int[100, 100];
+        }
+
         public void Log(string message)
         {
             Logger.LogInfo(message);
