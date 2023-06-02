@@ -138,10 +138,29 @@ namespace RegionsOfRuin_ConsoleCommands
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} by Daltonyx is loaded!");
         }
 
-        public void achget(string id)
+        public void achget()
         {
             //Steamworks.SteamUserStats.SetAchievement(id);
-            Log("All achievements unlocked!");
+            stats.Unlock("achievement_money_1M");
+            stats.Unlock("achievement_money_10M");
+            stats.Unlock("achievement_money_100M");
+            stats.Unlock("achievement_buildings_max");
+            Log("All achievements i can find are unlocked!");
+        }
+
+        public void popup(string text)
+        {
+            informBox.handler.openBox(text, 0f);
+        }
+
+        public void addore(long amount)
+        {
+            //clickerController.ore += amount;
+        }
+
+        public void unlockhard()
+        {
+            PlayerPrefsX.SetBool("finishedGame", true);
         }
 
         public void Update()
@@ -211,6 +230,12 @@ namespace RegionsOfRuin_ConsoleCommands
                 }
                 else
                 {
+                    if (command_text == null)
+                    {
+                        gui_ready = false;
+                        return;
+                    }
+                        
                     //overrides go here
                     if (daytime)
                     {
@@ -322,6 +347,11 @@ namespace RegionsOfRuin_ConsoleCommands
                             daytime = true;
                         }
 
+                        if (command_string.StartsWith("/achget"))
+                        {
+                            achget();
+                        }
+
                         if (command_string.StartsWith("/settime"))
                         {
                             string[] strings = command_string.Split(' ');
@@ -348,6 +378,11 @@ namespace RegionsOfRuin_ConsoleCommands
                             int choice = int.Parse(strings[1]);
                             DwarfController.self.gainExp(choice);
                             Log($"Added {choice} xp");
+                        }
+
+                        if (command_string.StartsWith("/unlockhard"))
+                        {
+                            unlockhard();
                         }
 
                         if (command_string.StartsWith("/setxp"))
