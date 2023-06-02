@@ -26,7 +26,7 @@ namespace RegionsOfRuin_ConsoleCommands
 
         bool gui_ready = false;
         bool selected = false;
-        interactionInfo interactionInfo;
+        customInteractInfo interactionInfo;
 
         private void Awake()
         {
@@ -54,25 +54,12 @@ namespace RegionsOfRuin_ConsoleCommands
             //we have our player 'dwarf', now we can continue the loop
             else if (player != null)
             {
-                if (canvas == null)
+                if (command_text == null)
                 {
                     command_text = new GameObject("command_text");
-                    command_text.AddComponent<interactionInfo>();
-                    interactionInfo = command_text.GetComponentInChildren<interactionInfo>();
+                    command_text.AddComponent<customInteractInfo>();
+                    interactionInfo = command_text.GetComponentInChildren<customInteractInfo>();
 
-                    info = interactionInfo.infoText.gameObject;
-                    origin = info.transform.position;
-                    
-                    int screen_width = Screen.width;
-                    int screen_height = Screen.height;
-                    
-                    interactionInfo.info = this.infoText.gameObject;
-                    interactionInfo.infoText.color = Color.white;
-                    interactionInfo.origin = new Vector3((int)screen_width/2, screen_height-(int)screen_height/8, 0);
-
-                    
-                    //set command_text's position to _our_ origin
-                    interactionInfo.infoText.transform.position = this.origin;
                     interactionInfo.infoText.text = "Press / for commands";
                     
 
@@ -90,8 +77,8 @@ namespace RegionsOfRuin_ConsoleCommands
                         if (popup_timer == 0)
                         {
                             
-                            command_text.GetComponentInChildren<interactionInfo>().infoText.color = Color.white;
-                            command_text.GetComponentInChildren<interactionInfo>().infoText.text = "";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.color = Color.white;
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = "";
                         }
                     }
 
@@ -100,13 +87,13 @@ namespace RegionsOfRuin_ConsoleCommands
                         if (selected)
                         {
                             selected = false;
-                            command_text.GetComponentInChildren<interactionInfo>().infoText.text = "Press / for commands";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = "Press / for commands";
                             command_string = "";
                         }
                         else
                         {
                             selected = true;
-                            command_text.GetComponentInChildren<interactionInfo>().infoText.text = "/";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = "/";
                             command_string = "/";
                         }
                     }
@@ -118,7 +105,7 @@ namespace RegionsOfRuin_ConsoleCommands
                             if (command_string.Length > 0)
                             {
                                 command_string = command_string.Substring(0, command_string.Length - 1);
-                                command_text.GetComponentInChildren<interactionInfo>().infoText.text = command_string;
+                                command_text.GetComponentInChildren<customInteractInfo>().infoText.text = command_string;
                             }
                         }
                     }
@@ -128,7 +115,7 @@ namespace RegionsOfRuin_ConsoleCommands
                         if (selected)
                         {
                             selected = false;
-                            command_text.GetComponentInChildren<interactionInfo>().infoText.text = "Press / for commands";
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.text = "Press / for commands";
                             command_string = "";
                         }
                         popup_timer = 0;
@@ -169,14 +156,14 @@ namespace RegionsOfRuin_ConsoleCommands
                 //      vvv      longer than 2 seconds lol
                 //  interactionInfo.inform(message, Color.white);
                 
-                command_text.GetComponentInChildren<interactionInfo>().infoText.color = Color.white;
-                command_text.GetComponentInChildren<interactionInfo>().infoText.text = message;
+                command_text.GetComponentInChildren<customInteractInfo>().infoText.color = Color.white;
+                command_text.GetComponentInChildren<customInteractInfo>().infoText.text = message;
 
                 popup_timer = 400;
 
                 
             }
-            command_text.GetComponentInChildren<interactionInfo>().inform("Press / for commands", Color.white);
+            command_text.GetComponentInChildren<customInteractInfo>().inform("Press / for commands", Color.white);
         }
     }
 }
