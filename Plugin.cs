@@ -17,6 +17,7 @@ namespace RegionsOfRuin_ConsoleCommands
         public Text clearText;
         private GameObject info;
         public Text infoText;
+        bool patched = false;
         string command_string = "";
         int ticker_playerfind = 0;
         int popup_timer = 0;
@@ -28,6 +29,108 @@ namespace RegionsOfRuin_ConsoleCommands
         int strengthchoice = 0;
         bool nowounds = false;
         customInteractInfo interactionInfo;
+
+        // Token: 0x04000C39 RID: 3129
+	private int[] axe = new int[]
+	{
+		1, /* image */ 
+		99, /* ability damage? maybe? on the axe it's 'max cleaving' */
+		6969, /* cost */
+		19,
+		21,
+		23,
+		25,
+		27, /* crit chance */
+		29, /* crit damage */
+		31, /* armor pen */
+		33, /* second half of armour rating */
+		35, /* physical res */
+		37, /* fire res */
+		39, /* cold res */
+		41, /* poison res */
+		43, /* electric res */
+		45, /* strength */
+		47, /* dexterity */
+		49, /* constitution */
+		51,
+		53, /* first half of armour rating */
+		55,
+		57,
+		59,
+		61,
+		63,
+		65,
+		67,
+		69
+	};
+
+	// Token: 0x04000C3A RID: 3130
+	private int[] shield = new int[]
+	{
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999
+	};
+
+	// Token: 0x04000C3B RID: 3131
+	private int[] armour = new int[]
+	{
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999,
+		999
+	};
 
         private void Awake()
         {
@@ -58,11 +161,11 @@ namespace RegionsOfRuin_ConsoleCommands
             //if game's scene's name is 'title', skip the rest of the loop to gracefully handle the main menu
             if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name.ToString() == "title")
             {
-                introScript iscript = FindObjectOfType<introScript>();
-                if (iscript != null)
+                if (!patched)
                 {
-                    iscript.skipBTN();
-                    //iscript.page = 3;
+                    //man I don't understand reflection very well, no patching today
+                    //Harmony.CreateAndPatchAll(typeof(PatchUpdateStats));
+                    patched = !patched;
                 }
                 return;
             }
@@ -433,7 +536,50 @@ namespace RegionsOfRuin_ConsoleCommands
                             
                         }
 
+                        if (command_string.StartsWith("/kit"))
+                        {
+                            
+                            /*
+                                here is a method I found for when the tutorial ends, it gives you starting equipment. Using this I am trying
+                                to figure out how the give command should function. It seems that there may be 29 infos (kind of, all three loops iterate
+                                over 29 spots, I'm thinking they're the stats of the weapon) and during the entire iteration, they are setting a specific inventory slot (the second variable accessed through inventory.inv). I have not quite
+                                figured out what the first variable is. I'm going to poke around some more and see if it is the amount maybe? That would be weird though,
+                                as all resources are handled through the resourceInfo and dwarfController (i can't remember the exact name, maybe resourceDisplay) scripts.
 
+                            */
+
+                            for (int j = 0; j < 36; j++)
+                            {
+                                if (j > 6)
+                                {
+                                    for (int i = 0; i < 29; i++)
+                                    {
+                                        inventory.inv[0, j, i] = axe[i];
+                                    }
+                                    inventory.itemNames[0, j] = "PWNaxe";
+                                }
+                            }
+/*
+                            for (int j = 0; j < 29; j++)
+                            {
+                                inventory.inv[0, 3, j] = shield[j];
+                            }
+                            inventory.itemNames[0, 3] = "PWNbuckler";
+
+
+                            for (int k = 0; k < 29; k++)
+                            {
+                                inventory.inv[0, 1, k] = armour[k];
+                            }
+                            inventory.itemNames[0, 1] = "PWNvest";
+                            */
+
+                            inventory.refreshWornStats();
+
+
+
+                            
+                        }
 
                         selected = false;
                         command_text.GetComponentInChildren<customInteractInfo>().infoText.text = "Press / for commands";
@@ -724,43 +870,22 @@ namespace RegionsOfRuin_ConsoleCommands
 
     class PatchUpdateStats
     {
-        [HarmonyPatch(typeof(introScript), "Update")]
+        //this is supposed to be a nointro hack but i'm sick of trying so /shrug
+        [HarmonyPatch(typeof(introScript), "anyKeyFadeOut")]
         [HarmonyPrefix]
-        public static void UpdateReal(introScript __instance, ref bool __runOriginal)
+        public static IEnumerator UpdateReal(introScript __instance, bool __runOriginal)
         {
             __instance.skipBTN();
-            FieldInfo skipField = typeof(introScript).GetField("skip", BindingFlags.NonPublic | BindingFlags.Instance);
-            bool skip = (bool)skipField.GetValue(__instance);
-            FieldInfo skippingField = typeof(introScript).GetField("skipping", BindingFlags.NonPublic | BindingFlags.Instance);
-            bool skipping = (bool)skippingField.GetValue(__instance);
-            if (skip && !skipping)
+            yield return new WaitForSeconds(0f);
+            Color col = __instance.keyText.color;
+            for (int i = 0; i < 50; i++)
             {
-                skippingField.SetValue(__instance, true);
-                skipField.SetValue(__instance, false);
-                MethodInfo fadeOutMethod = typeof(introScript).GetMethod("fadeOut", BindingFlags.NonPublic | BindingFlags.Instance);
-                __instance.StartCoroutine((IEnumerator)fadeOutMethod.Invoke(__instance, null));
+                col.a -= 0.02f;
+                __instance.keyText.color = col;
+                yield return new WaitForSeconds(0f);
             }
-            FieldInfo fadingOutField = typeof(introScript).GetField("fadingOut", BindingFlags.NonPublic | BindingFlags.Instance);
-            bool fadingOut = (bool)fadingOutField.GetValue(__instance);
-            if (!fadingOut && Input.anyKeyDown)
-            {
-                FieldInfo pageField = typeof(introScript).GetField("page", BindingFlags.NonPublic | BindingFlags.Instance);
-                int page = (int)pageField.GetValue(__instance);
-                if (page < 3)
-                {
-                    page = 3;
-                    pageField.SetValue(__instance, page + 1);
-                    fadingOutField.SetValue(__instance, true);
-                    MethodInfo nextSlideMethod = typeof(introScript).GetMethod("nextSlide", BindingFlags.NonPublic | BindingFlags.Instance);
-                    __instance.StartCoroutine((System.Collections.IEnumerator)nextSlideMethod.Invoke(__instance, null));
-                }
-                else
-                {
-                    fadingOutField.SetValue(__instance, true);
-                    MethodInfo fadeOutMethod = typeof(introScript).GetMethod("fadeOut", BindingFlags.NonPublic | BindingFlags.Instance);
-                    __instance.StartCoroutine((System.Collections.IEnumerator)fadeOutMethod.Invoke(__instance, null));
-                }
-            }
+            __runOriginal = false;
+            yield break;
         }
     }
 }
