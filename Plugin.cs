@@ -1,6 +1,9 @@
 ﻿using BepInEx;
 using UnityEngine;
 using UnityEngine.UI;
+using HarmonyLib;
+using System.Reflection;
+using System.Collections;
 
 namespace RegionsOfRuin_ConsoleCommands
 {
@@ -14,10 +17,7 @@ namespace RegionsOfRuin_ConsoleCommands
         public Text clearText;
         private GameObject info;
         public Text infoText;
-
-
         string command_string = "";
-
         int ticker_playerfind = 0;
         int popup_timer = 0;
         bool daytime = false;
@@ -62,6 +62,7 @@ namespace RegionsOfRuin_ConsoleCommands
                 if (iscript != null)
                 {
                     iscript.skipBTN();
+                    //iscript.page = 3;
                 }
                 return;
             }
@@ -717,6 +718,48 @@ namespace RegionsOfRuin_ConsoleCommands
                 interactionInfo iInfo = FindObjectOfType<interactionInfo>();
                 iInfo.inform(message, Color.green);
                 popup_timer = 400;
+            }
+        }
+    }
+
+    class PatchUpdateStats
+    {
+        [HarmonyPatch(typeof(introScript), "Update")]
+        [HarmonyPrefix]
+        public static void UpdateReal(introScript __instance, ref bool __runOriginal)
+        {
+            __instance.skipBTN();
+            FieldInfo skipField = typeof(introScript).GetField("skip", BindingFlags.NonPublic | BindingFlags.Instance);
+            bool skip = (bool)skipField.GetValue(__instance);
+            FieldInfo skippingField = typeof(introScript).GetField("skipping", BindingFlags.NonPublic | BindingFlags.Instance);
+            bool skipping = (bool)skippingField.GetValue(__instance);
+            if (skip && !skipping)
+            {
+                skippingField.SetValue(__instance, true);
+                skipField.SetValue(__instance, false);
+                MethodInfo fadeOutMethod = typeof(introScript).GetMethod("fadeOut", BindingFlags.NonPublic | BindingFlags.Instance);
+                __instance.StartCoroutine((IEnumerator)fadeOutMethod.Invoke(__instance, null));
+            }
+            FieldInfo fadingOutField = typeof(introScript).GetField("fadingOut", BindingFlags.NonPublic | BindingFlags.Instance);
+            bool fadingOut = (bool)fadingOutField.GetValue(__instance);
+            if (!fadingOut && Input.anyKeyDown)
+            {
+                FieldInfo pageField = typeof(introScript).GetField("page", BindingFlags.NonPublic | BindingFlags.Instance);
+                int page = (int)pageField.GetValue(__instance);
+                if (page < 3)
+                {
+                    page = 3;
+                    pageField.SetValue(__instance, page + 1);
+                    fadingOutField.SetValue(__instance, true);
+                    MethodInfo nextSlideMethod = typeof(introScript).GetMethod("nextSlide", BindingFlags.NonPublic | BindingFlags.Instance);
+                    __instance.StartCoroutine((System.Collections.IEnumerator)nextSlideMethod.Invoke(__instance, null));
+                }
+                else
+                {
+                    fadingOutField.SetValue(__instance, true);
+                    MethodInfo fadeOutMethod = typeof(introScript).GetMethod("fadeOut", BindingFlags.NonPublic | BindingFlags.Instance);
+                    __instance.StartCoroutine((System.Collections.IEnumerator)fadeOutMethod.Invoke(__instance, null));
+                }
             }
         }
     }
