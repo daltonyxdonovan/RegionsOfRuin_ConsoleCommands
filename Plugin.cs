@@ -1,5 +1,6 @@
 ﻿using BepInEx;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace RegionsOfRuin_ConsoleCommands
 {
@@ -7,9 +8,10 @@ namespace RegionsOfRuin_ConsoleCommands
     public class Plugin : BaseUnityPlugin
     {
         GameObject player;
-        Canvas canvas;
-        TextMesh popup_text;
-        TextMesh command_text;
+        GameObject canvas;
+        Text popup_text;
+        Text command_text;
+
 
         string command_string = "";
 
@@ -48,33 +50,125 @@ namespace RegionsOfRuin_ConsoleCommands
                 if (canvas == null)
                 {
                     //create a new canvas
-                    canvas = new GameObject("Canvas", typeof(Canvas)).GetComponent<Canvas>();
+                    canvas = GameObject.Find("Canvas(Clone)");
                     //create popup_text and set it's parent to canvas
-                    popup_text = new GameObject("Popup Text", typeof(TextMesh)).GetComponent<TextMesh>();
+                    popup_text = new GameObject("Popup Text", typeof(Text)).GetComponent<Text>();
                     popup_text.transform.SetParent(canvas.transform);
-                    
-                    popup_text.fontSize = 1;
+                    popup_text.fontSize = 10;
                     popup_text.color = Color.white;
                     popup_text.text = "";
 
-                    //do the same for command_text, but it's position should be -13.1818 -8.1 0
-                    command_text = new GameObject("Command Text", typeof(TextMesh)).GetComponent<TextMesh>();
+                    //do the same for command_text
+                    command_text =  new GameObject("Command Text", typeof(Text)).GetComponent<Text>();
                     command_text.transform.SetParent(canvas.transform);
+                    interactionInfo interactionInfo = FindObjectOfType<interactionInfo>();
+
+
+                    GameObject info = interactionInfo.infoText.gameObject;
+                    Vector3 origin = info.transform.position;
+
+                    int screen_width = Screen.width;
+                    int screen_height = Screen.height;
+
+                    command_text.transform.position = new Vector3(origin.x, screen_height-(int)screen_height/8, origin.z);
+
                     
-                    command_text.fontSize = 1;
+                    command_text.fontSize = 10;
                     command_text.color = Color.white;
                     command_text.text = "Press / for commands";
                     selected = false;
                     command_string = "";
-                    //set position to (-12,8)
+                    
                     
                     
 
-                    //bring it to the front of the 2d screen
-                    canvas.planeDistance = 1;
-                    //set it to the 'UI' layer
-                    canvas.gameObject.layer = 5;
+                    
                 }
+                else
+                {
+                    //if canvas isn't null, we can attempt to access values and stuff, but it's still unsafe in title
+                    if (popup_timer > 0)
+                    {
+                        popup_timer--;
+                        if (popup_timer == 0)
+                        {
+                            interactionInfo interactionInfo = FindObjectOfType<interactionInfo>();
+                            interactionInfo.infoText.color = Color.white;
+                            interactionInfo.infoText.text = "";
+                        }
+                    }
+
+                    if (Input.GetKeyDown(KeyCode.Slash))
+                    {
+                        if (selected)
+                        {
+                            selected = false;
+                            command_text.text = "Press / for commands";
+                            command_string = "";
+                        }
+                        else
+                        {
+                            selected = true;
+                            command_text.text = "/";
+                            command_string = "/";
+                        }
+                    }
+
+                    if (Input.GetKeyDown(KeyCode.Backspace))
+                    {
+                        if (selected)
+                        {
+                            if (command_string.Length > 0)
+                            {
+                                command_string = command_string.Substring(0, command_string.Length - 1);
+                                command_text.text = command_string;
+                            }
+                        }
+                    }
+
+                    if (Input.GetKeyDown(KeyCode.Escape))
+                    {
+                        if (selected)
+                        {
+                            selected = false;
+                            command_text.text = "Press / for commands";
+                            command_string = "";
+                        }
+                        popup_timer = 0;
+                    }
+
+                    if (Input.GetKeyDown(KeyCode.Return))
+                    {
+                        for (int i = 0; i < 6; i++)
+                        {
+                            clickerController.bar[i] += 100000L;
+                        }
+                            
+                            
+                        
+                        Log("All achievements unlocked!");
+                    }
+                }
+            }
+        }
+        
+    
+        public void Log(string message)
+        {
+            Logger.LogInfo(message);
+            if (canvas != null)
+            {
+                interactionInfo interactionInfo = FindObjectOfType<interactionInfo>();
+                //      vvv      this is the way the game does it's popup text, so we'll do it the same way but get rid of the alpha manipulation
+                //      vvv      longer than 2 seconds lol
+                //  interactionInfo.inform(message, Color.white);
+                
+                interactionInfo.infoText.color = Color.white;
+                interactionInfo.infoText.text = message;
+
+                popup_timer = 400;
+
+                
             }
         }
     }
