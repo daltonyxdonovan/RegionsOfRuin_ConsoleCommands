@@ -36,10 +36,10 @@ namespace RegionsOfRuin_ConsoleCommands
 		1, /* image */ 
 		99, /* ability damage? maybe? on the axe it's 'max cleaving' */
 		6969, /* cost */
-		19,
-		21,
-		23,
-		25,
+		0,
+		0,
+		0,
+		0,
 		27, /* crit chance */
 		29, /* crit damage */
 		31, /* armor pen */
@@ -52,16 +52,16 @@ namespace RegionsOfRuin_ConsoleCommands
 		45, /* strength */
 		47, /* dexterity */
 		49, /* constitution */
-		51,
+		0,
 		53, /* first half of armour rating */
-		55,
-		57,
-		59,
-		61,
-		63,
-		65,
-		67,
-		69
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0
 	};
 
 	// Token: 0x04000C3A RID: 3130
@@ -138,21 +138,9 @@ namespace RegionsOfRuin_ConsoleCommands
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} by Daltonyx is loaded!");
         }
 
-        public void achget()
+        public void achget(string id)
         {
-            //      what i'm trying to do here is set all achievement get's to true, then trigger an actual achievement to 
-            //      pop them all, but it isn't quite right yet
-
-            for (int i = 0; i < clickerController.achievements.Length; i++)
-            {
-                Log(i.ToString());
-                clickerController.achievements[i] = true;
-            }
-            for (int i = 0; i < 6; i++)
-            {
-                clickerController.bar[i] += 100000L;
-                
-            }
+            //Steamworks.SteamUserStats.SetAchievement(id);
             Log("All achievements unlocked!");
         }
 
@@ -332,6 +320,15 @@ namespace RegionsOfRuin_ConsoleCommands
                         {
                             nighttime = false;
                             daytime = true;
+                        }
+
+                        if (command_string.StartsWith("/settime"))
+                        {
+                            string[] strings = command_string.Split(' ');
+                            int choice = int.Parse(strings[1]);
+                            dayCycleController day_cycle_controller = FindObjectOfType<dayCycleController>();
+                            day_cycle_controller.time = choice;
+                            Log($"Set time to {choice}");
                         }
 
                         if (command_string.StartsWith("/strength"))
@@ -579,6 +576,69 @@ namespace RegionsOfRuin_ConsoleCommands
 
 
                             
+                        }
+
+                        if (command_string.StartsWith("/help"))
+                        {
+                            string[] strings = command_string.Split(' ');
+                            if (strings.Length > 1)
+                            {
+                                string command = strings[1];
+                                if (command == "addmoney")
+                                    Log("/addmoney <amount> - Adds money to your inventory");
+                                else if (command == "moon")
+                                    Log("sets it to permanent nighttime");
+                                else if (command == "sun")
+                                    Log("sets it to permanent daytime");
+                                else if (command == "settime")
+                                    Log("/settime <time> - Sets the time of day");
+                                else if (command == "strength")
+                                    Log("/strength <amount> - Sets your strength");
+                                else if (command == "dexterity")
+                                    Log("/dexterity <amount> - Sets your dexterity");
+                                else if (command == "constitution")
+                                    Log("/constitution <amount> - Sets your constitution");
+                                else if (command == "setxp")
+                                    Log("/setmaxhp <amount> - Sets your max hp");
+                                else if (command == "sethp")
+                                    Log("/sethp <amount> - Sets your current hp");
+                                else if (command == "setmaxhp")
+                                    Log("/setmaxhp <amount> - Sets your max hp");
+                                else if (command == "heal")
+                                    Log("/heal <amount> - Heals you OR /heal - heals to max health");
+                                else if (command == "nowounds")
+                                    Log("/nowounds <bool> - sets wounds on or off (true or false)");
+                                else if (command == "shieldcondition")
+                                    Log("/shieldcondition <amount> - sets your shield's condition");
+                                else if (command == "shieldconditionmax")
+                                    Log("/shieldconditionmax <amount> - sets your shield's max condition");
+                                else if (command == "weaponweight")
+                                    Log("/weaponweight <amount> - sets your weapon's weight");
+                                else if (command == "setlvl")
+                                    Log("/setlvl <amount> - sets your level");
+                                else if (command == "setrep")
+                                    Log("/setrep <amount> - sets your reputation");
+                                else if (command == "devtools")
+                                    Log("/devtools - enables dev keybinds");
+                                else if (command == "addworker")
+                                    Log("/addworker <amount> - adds workers to your inventory");
+                                else if (command == "kill")
+                                    Log("/kill - kills all enemies");
+                                else if (command == "chest")
+                                    Log("/chest - spawns a chest");
+                                else if (command == "flip")
+                                    Log("/flip - flips your character");
+                                else if (command == "kit")
+                                    Log("/kit - spawns dev weapon in inventory");
+                                else if (command == "help")
+                                    Log("/help <command> - gives help on a command");
+                                
+
+                            }
+                            else
+                            {
+                                Log("/help usage: /help <command>");
+                            }
                         }
 
                         selected = false;
