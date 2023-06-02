@@ -31,6 +31,24 @@ namespace RegionsOfRuin_ConsoleCommands
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} by Daltonyx is loaded!");
         }
 
+        public void achget()
+        {
+            //      what i'm trying to do here is set all achievement get's to true, then trigger an actual achievement to 
+            //      pop them all, but it isn't quite right yet
+
+            for (int i = 0; i < clickerController.achievements.Length; i++)
+            {
+                Log(i.ToString());
+                clickerController.achievements[i] = true;
+            }
+            for (int i = 0; i < 6; i++)
+            {
+                clickerController.bar[i] += 100000L;
+                
+            }
+            Log("All achievements unlocked!");
+        }
+
         public void Update()
         {
             //if game's scene's name is 'title', skip the rest of the loop to gracefully handle the main menu
@@ -66,7 +84,7 @@ namespace RegionsOfRuin_ConsoleCommands
                     info.transform.SetParent(command_text.transform);
                     //set command_text's parent to canvas
                     canvas = GameObject.Find("Canvas(Clone)");
-                    command_text.transform.SetParent(canvas.transform);
+                    //command_text.transform.SetParent(canvas.transform);
                     command_text.AddComponent<customInteractInfo>();
                     interactionInfo = command_text.GetComponentInChildren<customInteractInfo>();
 
@@ -83,13 +101,25 @@ namespace RegionsOfRuin_ConsoleCommands
                     float screenWidth = Screen.currentResolution.width;
                     float screenHeight = Screen.currentResolution.height;
                     command_text.transform.position = new Vector3(0, 0, 0);
-                    command_text.transform.localPosition = new Vector3(screenWidth/2, screenHeight-(screenHeight/8), 0);
+                    command_text.transform.localPosition = new Vector3(0,0,0);
 
                     
                 }
                 else
                 {
-                    command_text.transform.SetParent(canvas.transform);
+                    //if canvas is not the parent of command_text, set it to be
+                    if (command_text.transform.parent != canvas.transform)
+                        command_text.transform.SetParent(canvas.transform);
+                    
+                    float screenWidth = PlayerPrefs.GetFloat("screenWidth");
+                    float screenHeight = PlayerPrefs.GetFloat("screenHeight");
+                    //I'm just trying to get the resolution of the window, and not the screen. WHY IS IT THIS HARD
+                    float windowWidth = Screen.width;
+                    float windowHeight = Screen.height;
+                    float textWidth = command_text.GetComponentInChildren<customInteractInfo>().infoText.GetComponent<RectTransform>().rect.width;
+                    command_text.transform.position = new Vector3(0, 0, 0);
+                    command_text.transform.localPosition = new Vector3(-200,-500,0);
+                    //command_text.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 400);
                     //if canvas isn't null, we can attempt to access values and stuff, but it's still unsafe in title
                     if (popup_timer > 0)
                     {
@@ -97,7 +127,7 @@ namespace RegionsOfRuin_ConsoleCommands
                         if (popup_timer == 0)
                         {
                             
-                            command_text.GetComponentInChildren<customInteractInfo>().infoText.color = Color.white;
+                            command_text.GetComponentInChildren<customInteractInfo>().infoText.color = Color.red;
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = "";
                         }
                     }
@@ -143,23 +173,7 @@ namespace RegionsOfRuin_ConsoleCommands
 
                     if (Input.GetKeyDown(KeyCode.Return))
                     {
-                        //      what i'm trying to do here is set all achievement get's to true, then trigger an actual achievement to 
-                        //      pop them all, but it isn't quite right yet
-
-                        for (int i = 0; i < clickerController.achievements.Length; i++)
-                        {
-                            Log(i.ToString());
-                            clickerController.achievements[i] = true;
-                        }
-                        for (int i = 0; i < 6; i++)
-                        {
-                            clickerController.bar[i] += 100000L;
-                            
-                        }
-                            
-                            
                         
-                        Log("All achievements unlocked!");
                     }
 
                     if (selected)
@@ -366,9 +380,9 @@ namespace RegionsOfRuin_ConsoleCommands
                 
                 //      vvv      this is the way the game does it's popup text, so we'll do it the same way but get rid of the alpha manipulation
                 //      vvv      longer than 2 seconds lol
-                //  interactionInfo.inform(message, Color.white);
+                //  interactionInfo.inform(message, Color.red);
                 
-                command_text.GetComponentInChildren<customInteractInfo>().infoText.color = Color.white;
+                command_text.GetComponentInChildren<customInteractInfo>().infoText.color = Color.red;
                 command_text.GetComponentInChildren<customInteractInfo>().infoText.text = message;
 
                 popup_timer = 400;

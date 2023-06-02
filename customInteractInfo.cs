@@ -31,8 +31,7 @@ public class customInteractInfo : MonoBehaviour
 	// Token: 0x04000794 RID: 1940
 	public static customInteractInfo interactInfo;
 
-	// Token: 0x04000795 RID: 1941
-	private int i;
+
 
 
 
@@ -52,9 +51,8 @@ public class customInteractInfo : MonoBehaviour
         
 
 		this.infoText.color = Color.white;
-        int screenWidth = Screen.width;
-        int screenHeight = Screen.height;
-		this.origin = new Vector3(0,0, 0);
+        
+		this.origin = new Vector2(0,0);
         //set a font
         this.infoText.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
         //set overflow to true and word-wrapping to false
@@ -94,16 +92,9 @@ public class customInteractInfo : MonoBehaviour
 	// Token: 0x06000526 RID: 1318 RVA: 0x00046A78 File Offset: 0x00044E78
 	private IEnumerator moveInfo()
 	{
-		Vector2 newPos = this.info.transform.position;
-		this.i = 0;
-		while (this.i < 50)
-		{
-			newPos.y += 0f;
-			this.info.transform.position = newPos;
-			yield return new WaitForSeconds((this.timer + 0.35f) / 50f);
-			this.i++;
-		}
-		yield break;
+		yield return new WaitForSeconds(1);
+        
+        yield break;
 	}
 
 	// Token: 0x06000527 RID: 1319 RVA: 0x00046A94 File Offset: 0x00044E94
