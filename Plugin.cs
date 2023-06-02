@@ -57,7 +57,15 @@ namespace RegionsOfRuin_ConsoleCommands
         {
             //if game's scene's name is 'title', skip the rest of the loop to gracefully handle the main menu
             if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name.ToString() == "title")
+            {
+                introScript iscript = FindObjectOfType<introScript>();
+                if (iscript != null)
+                {
+                    iscript.skipBTN();
+                }
                 return;
+            }
+                
 
             //if we don't know what object the player is yet, find it
             if (player == null)
