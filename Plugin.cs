@@ -355,6 +355,14 @@ namespace RegionsOfRuin_ConsoleCommands
                             Log($"Set {choice} as level");
                         }
 
+                        if (command_string.StartsWith("/setrep"))
+                        {
+                            string[] strings = command_string.Split(' ');
+                            int choice = int.Parse(strings[1]);
+                            gameStatsLog.reputation = choice;
+                            Log($"Set {choice} as reputation");
+                        }
+
 
 
 
