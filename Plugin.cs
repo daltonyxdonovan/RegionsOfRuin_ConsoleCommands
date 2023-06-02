@@ -54,18 +54,40 @@ namespace RegionsOfRuin_ConsoleCommands
             //we have our player 'dwarf', now we can continue the loop
             else if (player != null)
             {
-                if (command_text == null)
+                if (gui_ready == false)
                 {
+                    gui_ready = true;
                     command_text = new GameObject("command_text");
+                    info = new GameObject("info");
+                    command_text.AddComponent<Text>();
+                    command_text.AddComponent<RectTransform>();
+                    command_text.AddComponent<CanvasRenderer>();
+                    info.AddComponent<Text>();
+                    info.AddComponent<RectTransform>();
+                    info.AddComponent<CanvasRenderer>();
+                    //set info's parent to command_text
+                    info.transform.SetParent(command_text.transform);
+                    //set command_text's parent to canvas
+                    canvas = GameObject.Find("Canvas(Clone)");
+                    command_text.transform.SetParent(canvas.transform);
+
+
+                    Logger.LogInfo($"command_text is {command_text}");
                     command_text.AddComponent<customInteractInfo>();
+                    Logger.LogInfo($"command_text has {command_text.GetComponentInChildren<customInteractInfo>()}");
                     interactionInfo = command_text.GetComponentInChildren<customInteractInfo>();
+                    Logger.LogInfo($"interactionInfo is {interactionInfo}");
 
                     interactionInfo.infoText.text = "Press / for commands";
-                    
+                    Logger.LogInfo($"interactionInfo.infoText.text is {interactionInfo.infoText.text}");
+                    popup_timer = 99999;
 
                     selected = false;
                     command_string = "";
-                    Logger.LogInfo($"");
+                    Logger.LogInfo($"interaction text is {interactionInfo.infoText.text}");
+                    //set a font
+                    command_text.GetComponentInChildren<customInteractInfo>().infoText.font = Font.CreateDynamicFontFromOSFont("Arial", 14);
+                    
                 }
                 else
                 {
@@ -163,7 +185,7 @@ namespace RegionsOfRuin_ConsoleCommands
 
                 
             }
-            command_text.GetComponentInChildren<customInteractInfo>().inform("Press / for commands", Color.white);
+           
         }
     }
 }
