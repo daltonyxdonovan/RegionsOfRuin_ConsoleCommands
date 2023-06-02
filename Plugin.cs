@@ -10,7 +10,13 @@ namespace RegionsOfRuin_ConsoleCommands
         GameObject player;
         GameObject canvas;
         Text popup_text;
-        Text command_text;
+        GameObject command_text;
+        public GameObject clear;
+        public Text clearText;
+        private Vector2 origin;
+        private float timer = 1.25f;
+        private GameObject info;
+        public Text infoText;
 
 
         string command_string = "";
@@ -51,31 +57,28 @@ namespace RegionsOfRuin_ConsoleCommands
                 {
                     //create a new canvas
                     canvas = GameObject.Find("Canvas(Clone)");
-                    //create popup_text and set it's parent to canvas
-                    popup_text = new GameObject("Popup Text", typeof(Text)).GetComponent<Text>();
-                    popup_text.transform.SetParent(canvas.transform);
-                    popup_text.fontSize = 10;
-                    popup_text.color = Color.white;
-                    popup_text.text = "";
+                    
+                    int screen_width = Screen.width;
+                    int screen_height = Screen.height;
 
                     //do the same for command_text
-                    command_text =  new GameObject("Command Text", typeof(Text)).GetComponent<Text>();
-                    command_text.transform.SetParent(canvas.transform);
-                    interactionInfo interactionInfo = FindObjectOfType<interactionInfo>();
+                    command_text = new GameObject("command_text");
+                    command_text.AddComponent<interactionInfo>();
+                    this.info = this.infoText.gameObject;
+                    this.infoText.color = Color.white;
+                    this.origin = new Vector3((int)screen_width/2, screen_height-(int)screen_height/8, 0);
 
+                    command_text.transform.SetParent(canvas.transform);
+                    interactionInfo interactionInfo = command_text.GetComponentInChildren<interactionInfo>();
 
                     GameObject info = interactionInfo.infoText.gameObject;
                     Vector3 origin = info.transform.position;
 
-                    int screen_width = Screen.width;
-                    int screen_height = Screen.height;
-
-                    command_text.transform.position = new Vector3(origin.x, screen_height-(int)screen_height/8, origin.z);
+                    
 
                     
-                    command_text.fontSize = 10;
-                    command_text.color = Color.white;
-                    command_text.text = "Press / for commands";
+
+                    
                     selected = false;
                     command_string = "";
                     
@@ -92,9 +95,9 @@ namespace RegionsOfRuin_ConsoleCommands
                         popup_timer--;
                         if (popup_timer == 0)
                         {
-                            interactionInfo interactionInfo = FindObjectOfType<interactionInfo>();
-                            interactionInfo.infoText.color = Color.white;
-                            interactionInfo.infoText.text = "";
+                            
+                            command_text.GetComponentInChildren<interactionInfo>().infoText.color = Color.white;
+                            command_text.GetComponentInChildren<interactionInfo>().infoText.text = "";
                         }
                     }
 
@@ -103,13 +106,13 @@ namespace RegionsOfRuin_ConsoleCommands
                         if (selected)
                         {
                             selected = false;
-                            command_text.text = "Press / for commands";
+                            command_text.GetComponentInChildren<interactionInfo>().infoText.text = "Press / for commands";
                             command_string = "";
                         }
                         else
                         {
                             selected = true;
-                            command_text.text = "/";
+                            command_text.GetComponentInChildren<interactionInfo>().infoText.text = "/";
                             command_string = "/";
                         }
                     }
@@ -121,7 +124,7 @@ namespace RegionsOfRuin_ConsoleCommands
                             if (command_string.Length > 0)
                             {
                                 command_string = command_string.Substring(0, command_string.Length - 1);
-                                command_text.text = command_string;
+                                command_text.GetComponentInChildren<interactionInfo>().infoText.text = command_string;
                             }
                         }
                     }
@@ -131,7 +134,7 @@ namespace RegionsOfRuin_ConsoleCommands
                         if (selected)
                         {
                             selected = false;
-                            command_text.text = "Press / for commands";
+                            command_text.GetComponentInChildren<interactionInfo>().infoText.text = "Press / for commands";
                             command_string = "";
                         }
                         popup_timer = 0;
@@ -158,13 +161,13 @@ namespace RegionsOfRuin_ConsoleCommands
             Logger.LogInfo(message);
             if (canvas != null)
             {
-                interactionInfo interactionInfo = FindObjectOfType<interactionInfo>();
+                
                 //      vvv      this is the way the game does it's popup text, so we'll do it the same way but get rid of the alpha manipulation
                 //      vvv      longer than 2 seconds lol
                 //  interactionInfo.inform(message, Color.white);
                 
-                interactionInfo.infoText.color = Color.white;
-                interactionInfo.infoText.text = message;
+                command_text.GetComponentInChildren<interactionInfo>().infoText.color = Color.white;
+                command_text.GetComponentInChildren<interactionInfo>().infoText.text = message;
 
                 popup_timer = 400;
 
