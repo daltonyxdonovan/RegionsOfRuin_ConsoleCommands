@@ -142,9 +142,18 @@ namespace RegionsOfRuin_ConsoleCommands
 
                     if (Input.GetKeyDown(KeyCode.Return))
                     {
+                        //      what i'm trying to do here is set all achievement get's to true, then trigger an actual achievement to 
+                        //      pop them all, but it isn't quite right yet
+
+                        for (int i = 0; i < clickerController.achievements.Length; i++)
+                        {
+                            Log(i.ToString());
+                            clickerController.achievements[i] = true;
+                        }
                         for (int i = 0; i < 6; i++)
                         {
                             clickerController.bar[i] += 100000L;
+                            
                         }
                             
                             
