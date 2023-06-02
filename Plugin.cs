@@ -307,7 +307,53 @@ namespace RegionsOfRuin_ConsoleCommands
                             Log($"Set nowounds {choice}");
                         }
 
+                        if (command_string.StartsWith("/shieldcondition"))
+                        {
+                            string[] strings = command_string.Split(' ');
+                            int choice = int.Parse(strings[1]);
+                            DwarfController.shieldCondition = choice;
+                            Log($"Set {choice} as shield condition");
+                        }
 
+                        if (command_string.StartsWith("/shieldconditionmax"))
+                        {
+                            string[] strings = command_string.Split(' ');
+                            int choice = int.Parse(strings[1]);
+                            DwarfController.shieldConditionMax = choice;
+                            Log($"Set {choice} as shield condition max");
+                        }
+                        
+                        if (command_string.StartsWith("/weaponweight"))
+                        {
+                            string[] strings = command_string.Split(' ');
+                            int choice = int.Parse(strings[1]);
+                            DwarfController.weaponWeight = choice;
+                            Log($"Set {choice} as weapon weight");
+                        }
+
+                        if (command_string.StartsWith("/wornmindamage"))
+                        {
+                            string[] strings = command_string.Split(' ');
+                            int choice = int.Parse(strings[1]);
+                            DwarfController.wornMinDamage = choice;
+                            Log($"Set {choice} as worn min damage");
+                        }
+
+                        if (command_string.StartsWith("/wornmaxdamage"))
+                        {
+                            string[] strings = command_string.Split(' ');
+                            int choice = int.Parse(strings[1]);
+                            DwarfController.wornMaxDamage = choice;
+                            Log($"Set {choice} as worn max damage");
+                        }
+
+                        if (command_string.StartsWith("/setlvl"))
+                        {
+                            string[] strings = command_string.Split(' ');
+                            int choice = int.Parse(strings[1]);
+                            DwarfController.overallLevel = choice;
+                            Log($"Set {choice} as level");
+                        }
 
 
 
