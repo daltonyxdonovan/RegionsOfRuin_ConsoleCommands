@@ -287,6 +287,8 @@ namespace RegionsOfRuin_ConsoleCommands
                                 DwarfController.currentHealth = DwarfController.maxHealth;
                                 Log($"Healed to max hp");
                             }
+
+                            
                             
                         }
 
@@ -417,6 +419,17 @@ namespace RegionsOfRuin_ConsoleCommands
                             position5.y += 1.5f;
                             position5.x += UnityEngine.Random.Range(-1f, 1f);
                             original = UnityEngine.Object.Instantiate<GameObject>(original, position5, Quaternion.identity);
+                        }
+
+                        if (command_string.StartsWith("/flip"))
+                        {
+                            DwarfController.facingRight = !DwarfController.facingRight;
+                            Vector3 localScale = base.transform.localScale;
+                            localScale.x *= -1f;
+                            base.transform.localScale = localScale;
+                            localScale.x *= 0.1f;
+                            localScale.y *= 0.1f;
+                            
                         }
 
 
