@@ -2,14 +2,18 @@
 
 REQUIRES BEPINEX 5.4- Console Commands for Regions of Ruin! Infinite money! Kill all Goblins! Get crazy gear! Permanent Nighttime? We got it. Check the readme for all commands, /help always helps too! usage: /help addmoney
 
-## Installation
+#########################################################################################################
+########################################### Installation #################################################
+#########################################################################################################
 
 1. Make sure you install bepinex 5.4 from my nexusmods windows easy installer or the bepinex github
 2. start the game at least 1 time, to generate the necessary folders from the game. You can tell it worked from the console window popping up when you start the game.
 3. Put the .dll in 'program files (x86)/steam/steamapps/common/regions of ruin/bepinex/plugins
 4. profit
 
-## Usage
+#########################################################################################################
+############################################## Usage #####################################################
+#########################################################################################################
 
 you _HAVE_ to use fullscreen or native resolution for you to be able to see the console window, due to unity's built-in method on grabbing screen size.
 
@@ -21,7 +25,9 @@ you _HAVE_ to use fullscreen or native resolution for you to be able to see the 
 
 NOTE: if you're using the /help command, and the gui is blocking the readout from the command, don't worry! just go look in the bepinex console, it logs all readouts there as well.
 
-## Commands
+#########################################################################################################
+################################################ Commands ################################################
+#########################################################################################################
 
 /addmoney (amount) - Adds money to your inventory
 
@@ -67,7 +73,11 @@ NOTE: if you're using the /help command, and the gui is blocking the readout fro
 
 /flip - flips your character
 
-/kit - spawns dev weapon in inventory
+/kit - spawns dev weapon and helm in inventory
+
+/setcap (amount) - sets your max capacity (resets randomly, but necessary before /giveall)
+
+/giveall (amount) - gives you all items in the game (also resets randomly, use /setcap first!)
 
 /help (command) - gives help on a command
 

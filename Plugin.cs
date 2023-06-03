@@ -31,7 +31,7 @@ namespace RegionsOfRuin_ConsoleCommands
         customInteractInfo interactionInfo;
 
         // Token: 0x04000C39 RID: 3129
-	private int[] axe = new int[]
+	private int[] helm = new int[]
 	{
 		1, /* image */ 
 		99, /* ability damage? maybe? on the axe it's 'max cleaving' */
@@ -67,69 +67,69 @@ namespace RegionsOfRuin_ConsoleCommands
 	// Token: 0x04000C3A RID: 3130
 	private int[] shield = new int[]
 	{
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999
+		1, /* image */ 
+		99, /* ability damage? maybe? on the axe it's 'max cleaving' */
+		6969, /* cost */
+		0,
+		0,
+		0,
+		0,
+		99, /* crit chance */
+		99, /* crit damage */
+		99, /* armor pen */
+		99, /* second half of armour rating */
+		99, /* physical res */
+		99, /* fire res */
+		99, /* cold res */
+		99, /* poison res */
+		99, /* electric res */
+		99, /* strength */
+		99, /* dexterity */
+		99, /* constitution */
+		0,
+		99, /* first half of armour rating */
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0
 	};
 
 	// Token: 0x04000C3B RID: 3131
-	private int[] armour = new int[]
+	private int[] axe = new int[]
 	{
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999,
-		999
+		1,
+		99,
+		6969,
+		2,
+		0,
+		1,
+		3,
+		99,
+		99,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		30,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0
 	};
 
         private void Awake()
@@ -140,11 +140,17 @@ namespace RegionsOfRuin_ConsoleCommands
 
         public void achget()
         {
+            
+            Harmony.CreateAndPatchAll(typeof(PatchStatUnlock));
             //Steamworks.SteamUserStats.SetAchievement(id);
             stats.Unlock("achievement_money_1M");
+            PatchStatUnlock patch = new PatchStatUnlock("achievement_money_1M");
             stats.Unlock("achievement_money_10M");
+            PatchStatUnlock patch2 = new PatchStatUnlock("achievement_money_10M");
             stats.Unlock("achievement_money_100M");
+            PatchStatUnlock patch3 = new PatchStatUnlock("achievement_money_100M");
             stats.Unlock("achievement_buildings_max");
+            PatchStatUnlock patch4 = new PatchStatUnlock("achievement_buildings_max");
             Log("All achievements i can find are unlocked!");
         }
 
@@ -161,6 +167,50 @@ namespace RegionsOfRuin_ConsoleCommands
         public void unlockhard()
         {
             PlayerPrefsX.SetBool("finishedGame", true);
+        }
+
+        public void giveWood(int amount)
+        {
+            resourceDisplay.res[0] += amount;
+            Log("Gave " + amount + " wood!");
+        }
+
+        public void giveLeather(int amount)
+        {
+            resourceDisplay.res[1] += amount;
+            Log("Gave " + amount + " leather!");
+        }
+
+        public void giveIron(int amount)
+        {
+            resourceDisplay.res[7] += amount;
+            Log("Gave " + amount + " iron!");
+        }
+
+        public void giveBronze(int amount)
+        {
+            resourceDisplay.res[8] += amount;
+            Log("Gave " + amount + " bronze!");
+        }
+
+        public void giveSteel(int amount)
+        {
+            resourceDisplay.res[10] += amount;
+            Log("Gave " + amount + " steel!");
+        }
+
+        public void giveAdamantine(int amount)
+        {
+            resourceDisplay.res[11] += amount;
+            Log("Gave " + amount + " adamantine!");
+        }
+
+        public void giveAll(int amount)
+        {
+            for (int i = 0; i < 12; i++)
+            {
+                resourceDisplay.res[i] += amount;
+            }
         }
 
         public void Update()
@@ -580,15 +630,25 @@ namespace RegionsOfRuin_ConsoleCommands
 
                             */
 
-                            for (int j = 0; j < 36; j++)
+                            for (int j = 0; j < 9; j++)
                             {
-                                if (j > 6)
+                                if (j > 6 && j < 8)
+                                {
+
+                                    for (int i = 0; i < 29; i++)
+                                    {
+                                        inventory.inv[0, j, i] = helm[i];
+                                    }
+                                    inventory.itemNames[0, j] = "Daltonyx's Helm";
+                                }
+                                else if (j == 8)
                                 {
                                     for (int i = 0; i < 29; i++)
                                     {
                                         inventory.inv[0, j, i] = axe[i];
+                                        
                                     }
-                                    inventory.itemNames[0, j] = "PWNaxe";
+                                    inventory.itemNames[0, j] = "Daltonyx's Axe";
                                 }
                             }
 /*
@@ -611,6 +671,25 @@ namespace RegionsOfRuin_ConsoleCommands
 
 
                             
+                        }
+
+                        if (command_string.StartsWith("/setcap"))
+                        {
+                            string[] strings = command_string.Split(' ');
+                            int choice = int.Parse(strings[1]);
+                            for (int i = 0; i < 12; i++)
+                            {
+                                resourceDisplay.cap[i] = choice;
+                            }
+                            Log($"Set {choice} as max resource cap");
+                        }
+
+                        if (command_string.StartsWith("/giveall"))
+                        {
+                            string[] strings = command_string.Split(' ');
+                            int choice = int.Parse(strings[1]);
+                            giveAll(choice);
+                            Log($"Gave {choice} of all resources!");
                         }
 
                         if (command_string.StartsWith("/help"))
@@ -639,6 +718,10 @@ namespace RegionsOfRuin_ConsoleCommands
                                     Log("/sethp <amount> - Sets your current hp");
                                 else if (command == "setmaxhp")
                                     Log("/setmaxhp <amount> - Sets your max hp");
+                                else if (command == "giveall")
+                                    Log("/giveall <amount> - Gives you <amount> of all resources");
+                                else if (command == "setcap")
+                                    Log("/setcap <amount> - Sets your max resource capacity");
                                 else if (command == "heal")
                                     Log("/heal <amount> - Heals you OR /heal - heals to max health");
                                 else if (command == "nowounds")
@@ -963,24 +1046,20 @@ namespace RegionsOfRuin_ConsoleCommands
         }
     }
 
-    class PatchUpdateStats
+    class PatchStatUnlock
     {
-        //this is supposed to be a nointro hack but i'm sick of trying so /shrug
-        [HarmonyPatch(typeof(introScript), "anyKeyFadeOut")]
-        [HarmonyPrefix]
-        public static IEnumerator UpdateReal(introScript __instance, bool __runOriginal)
+        private static string _id;
+        public PatchStatUnlock(string id)
         {
-            __instance.skipBTN();
-            yield return new WaitForSeconds(0f);
-            Color col = __instance.keyText.color;
-            for (int i = 0; i < 50; i++)
-            {
-                col.a -= 0.02f;
-                __instance.keyText.color = col;
-                yield return new WaitForSeconds(0f);
-            }
-            __runOriginal = false;
-            yield break;
+            _id = id;
+        }
+
+        [HarmonyPatch(typeof(stats), "Unlock")]
+        [HarmonyPrefix]
+        public static void RealUnlock(string id)
+        {
+            
+            Steamworks.SteamUserStats.SetAchievement(id);
         }
     }
 }

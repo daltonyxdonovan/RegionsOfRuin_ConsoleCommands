@@ -67,7 +67,11 @@ NOTE: if you're using the /help command, and the gui is blocking the readout fro
 
 /flip - flips your character
 
-/kit - spawns dev weapon in inventory
+/kit - spawns dev weapon and helm in inventory
+
+/setcap (amount) - sets your max capacity (resets randomly, but necessary before /giveall)
+
+/giveall (amount) - gives you all items in the game (also resets randomly, use /setcap first!)
 
 /help (command) - gives help on a command
 
