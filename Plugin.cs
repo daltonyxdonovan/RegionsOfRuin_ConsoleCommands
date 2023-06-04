@@ -31,6 +31,7 @@ namespace RegionsOfRuin_ConsoleCommands
         customInteractInfo interactionInfo;
 
         // Token: 0x04000C39 RID: 3129
+        //dev helm
 	private int[] helm = new int[]
 	{
 		1, /* image */ 
@@ -65,6 +66,8 @@ namespace RegionsOfRuin_ConsoleCommands
 	};
 
 	// Token: 0x04000C3A RID: 3130
+
+    //unused
 	private int[] shield = new int[]
 	{
 		1, /* image */ 
@@ -99,6 +102,7 @@ namespace RegionsOfRuin_ConsoleCommands
 	};
 
 	// Token: 0x04000C3B RID: 3131
+    //dev axe
 	private int[] axe = new int[]
 	{
 		1,
