@@ -13,10 +13,13 @@ namespace RegionsOfRuin_ConsoleCommands
         GameObject player;
         GameObject canvas;
         GameObject command_text;
+        GameObject suggestions_text;
         public GameObject clear;
         public Text clearText;
         private GameObject info;
+        private GameObject suggestions_info;
         public Text infoText;
+        public Text suggestionsText;
         bool patched = false;
         string command_string = "";
         int ticker_playerfind = 0;
@@ -29,7 +32,10 @@ namespace RegionsOfRuin_ConsoleCommands
         int strengthchoice = 0;
         bool nowounds = false;
         customInteractInfo interactionInfo;
-
+        Suggestions suggestions;
+        string[] commands_slash = new string[] { "/help", "/moon", "/sun", "/strength", "/dexterity", "/constitutions", "/addmoney", "/addxp", "/addworker", "/settime", "/setxp", "/setmaxhp", "/sethp", "/setlvl", "/setrep", "/setcap", "/achget", "/unlockhard", "/heal", "/nowounds", "shieldcondition", "/shieldconditionmax", "/weaponweight", "/wornmindamage", "/wornmaxdamage", "/devtools", "/timeup", "/timedown", "/kill", "/chest", "/flip", "/kit", "/giveall"};
+        string[] commands_noslash = new string[] { "help", "moon", "sun", "strength", "dexterity", "constitutions", "addmoney", "addxp", "addworker", "settime", "setxp", "setmaxhp", "sethp", "setlvl", "setrep", "setcap", "achget", "unlockhard", "heal", "nowounds", "shieldcondition", "shieldconditionmax", "weaponweight", "wornmindamage", "wornmaxdamage", "devtools", "timeup", "timedown", "kill", "chest", "flip", "kit", "giveall"};
+        
         // Token: 0x04000C39 RID: 3129
         //dev helm
 	private int[] helm = new int[]
@@ -250,20 +256,31 @@ namespace RegionsOfRuin_ConsoleCommands
                 {
                     gui_ready = true;
                     command_text = new GameObject("command_text");
+                    suggestions_text = new GameObject("suggestions_text");
                     info = new GameObject("info");
+                    suggestions_info = new GameObject("suggestions_info");
                     command_text.AddComponent<Text>();
+                    suggestions_text.AddComponent<Text>();
                     command_text.AddComponent<RectTransform>();
+                    suggestions_text.AddComponent<RectTransform>();
                     command_text.AddComponent<CanvasRenderer>();
+                    suggestions_text.AddComponent<CanvasRenderer>();
                     info.AddComponent<Text>();
+                    suggestions_info.AddComponent<Text>();
                     info.AddComponent<RectTransform>();
+                    suggestions_info.AddComponent<RectTransform>();
                     info.AddComponent<CanvasRenderer>();
+                    suggestions_info.AddComponent<CanvasRenderer>();
                     //set info's parent to command_text
                     info.transform.SetParent(command_text.transform);
+                    suggestions_info.transform.SetParent(suggestions_text.transform);
                     //set command_text's parent to canvas
                     canvas = GameObject.Find("Canvas(Clone)");
                     //command_text.transform.SetParent(canvas.transform);
                     command_text.AddComponent<customInteractInfo>();
+                    suggestions_text.AddComponent<Suggestions>();
                     interactionInfo = command_text.GetComponentInChildren<customInteractInfo>();
+                    suggestions = suggestions_text.GetComponentInChildren<Suggestions>();
 
                     interactionInfo.infoText.text = "Press / for commands";
 
@@ -274,11 +291,14 @@ namespace RegionsOfRuin_ConsoleCommands
                     Logger.LogInfo($"interaction text is {interactionInfo.infoText.text}");
                     //set a font
                     command_text.GetComponentInChildren<customInteractInfo>().infoText.font = Font.CreateDynamicFontFromOSFont("Arial", 14);
+                    suggestions_text.GetComponentInChildren<Suggestions>().infoText.font = Font.CreateDynamicFontFromOSFont("Arial", 6);
                     //get window width and height from player prefs
                     float screenWidth = Screen.currentResolution.width;
                     float screenHeight = Screen.currentResolution.height;
                     command_text.transform.position = new Vector3(0, 0, 0);
+                    suggestions_text.transform.position = new Vector3(0, 0, 0);
                     command_text.transform.localPosition = new Vector3(0,0,0);
+                    suggestions_text.transform.localPosition = new Vector3(0, 0, 0);
 
                     
                 }
@@ -321,7 +341,9 @@ namespace RegionsOfRuin_ConsoleCommands
                     float windowHeight = Screen.height;
                     float textWidth = command_text.GetComponentInChildren<customInteractInfo>().infoText.GetComponent<RectTransform>().rect.width;
                     command_text.transform.position = new Vector3(0, 0, 0);
+                    suggestions_text.transform.position = new Vector3(0, 0, 0);
                     command_text.transform.localPosition = new Vector3(-200,-500,0);
+                    suggestions_text.transform.localPosition = new Vector3(-200, -480, 0);
                     //command_text.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 400);
                     //if canvas isn't null, we can attempt to access values and stuff, but it's still unsafe in title without a check
                     if (popup_timer > 0)
@@ -332,6 +354,7 @@ namespace RegionsOfRuin_ConsoleCommands
                             
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.color = Color.white;
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = "";
+                            suggestions_text.GetComponentInChildren<Suggestions>().infoText.text = "";
                         }
                     }
 
