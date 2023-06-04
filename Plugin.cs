@@ -283,15 +283,17 @@ namespace RegionsOfRuin_ConsoleCommands
                     suggestions = suggestions_text.GetComponentInChildren<Suggestions>();
 
                     interactionInfo.infoText.text = "Press / for commands";
+                    suggestions.infosText.text = "Suggestions: ";
 
                     popup_timer = 99999;
 
                     selected = false;
                     command_string = "";
                     Logger.LogInfo($"interaction text is {interactionInfo.infoText.text}");
+                    Logger.LogInfo($"suggestions text is {suggestions.infosText.text}");
                     //set a font
                     command_text.GetComponentInChildren<customInteractInfo>().infoText.font = Font.CreateDynamicFontFromOSFont("Arial", 14);
-                    suggestions_text.GetComponentInChildren<Suggestions>().infoText.font = Font.CreateDynamicFontFromOSFont("Arial", 6);
+                    suggestions_text.GetComponentInChildren<Suggestions>().infosText.font = Font.CreateDynamicFontFromOSFont("Arial", 6);
                     //get window width and height from player prefs
                     float screenWidth = Screen.currentResolution.width;
                     float screenHeight = Screen.currentResolution.height;
@@ -333,6 +335,8 @@ namespace RegionsOfRuin_ConsoleCommands
                     //if canvas is not the parent of command_text, set it to be
                     if (command_text.transform.parent != canvas.transform)
                         command_text.transform.SetParent(canvas.transform);
+                    if (suggestions_text.transform.parent != canvas.transform)
+                        suggestions_text.transform.SetParent(canvas.transform);
                     
                     float screenWidth = PlayerPrefs.GetFloat("screenWidth");
                     float screenHeight = PlayerPrefs.GetFloat("screenHeight");
@@ -343,7 +347,7 @@ namespace RegionsOfRuin_ConsoleCommands
                     command_text.transform.position = new Vector3(0, 0, 0);
                     suggestions_text.transform.position = new Vector3(0, 0, 0);
                     command_text.transform.localPosition = new Vector3(-200,-500,0);
-                    suggestions_text.transform.localPosition = new Vector3(-200, -480, 0);
+                    suggestions_text.transform.localPosition = new Vector3(-180, -460, 0);
                     //command_text.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 400);
                     //if canvas isn't null, we can attempt to access values and stuff, but it's still unsafe in title without a check
                     if (popup_timer > 0)
@@ -354,7 +358,7 @@ namespace RegionsOfRuin_ConsoleCommands
                             
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.color = Color.white;
                             command_text.GetComponentInChildren<customInteractInfo>().infoText.text = "";
-                            suggestions_text.GetComponentInChildren<Suggestions>().infoText.text = "";
+                            //suggestions_text.GetComponentInChildren<Suggestions>().infoText.text = "";
                         }
                     }
 
@@ -1022,7 +1026,7 @@ namespace RegionsOfRuin_ConsoleCommands
                 }
             }
         
-            string[] textToDisplay = suggestionsText.text.Split();
+            string[] textToDisplay = suggestions_text.GetComponentInChildren<Suggestions>().infosText.text.Split();
             if (textToDisplay.Length > 1)
             {
                 if (textToDisplay[0] == "/help")
@@ -1031,7 +1035,10 @@ namespace RegionsOfRuin_ConsoleCommands
                     {
                         if (textToDisplay[1] != "" && textToDisplay[1] != " " && commands_noslash[i].StartsWith(textToDisplay[1].ToString()))
                         {
-                            suggestionsText.text = suggestionsText.text + " " + commands_noslash[i];
+                            
+                            suggestions_text.GetComponentInChildren<Suggestions>().infosText.color = Color.white;
+                            suggestions_text.GetComponentInChildren<Suggestions>().infosText.text = suggestions_text.GetComponentInChildren<Suggestions>().infosText.text + " " + commands_noslash[i];
+                            
                         }
                     }
                 }
@@ -1043,7 +1050,8 @@ namespace RegionsOfRuin_ConsoleCommands
                 {
                     if (textToDisplay[0] != "" && textToDisplay[0] != " " && commands_slash[i].StartsWith(textToDisplay[0].ToString()))
                     {
-                        suggestionsText.text = suggestionsText.text + " " + commands_slash[i];
+                        suggestions_text.GetComponentInChildren<Suggestions>().infosText.color = Color.white;
+                        suggestions_text.GetComponentInChildren<Suggestions>().infosText.text = suggestions_text.GetComponentInChildren<Suggestions>().infosText.text + " " + commands_slash[i];
                     }
                 }
             }

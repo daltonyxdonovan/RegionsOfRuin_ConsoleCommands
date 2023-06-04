@@ -23,13 +23,13 @@ public class Suggestions : MonoBehaviour
 	private GameObject info;
 
 	// Token: 0x04000792 RID: 1938
-	public Text infoText;
+	public Text infosText;
 
 	// Token: 0x04000793 RID: 1939
 	private Color offColor = new Color(1f, 1f, 1f, 0f);
 
 	// Token: 0x04000794 RID: 1940
-	public static customInteractInfo interactInfo;
+	public static Suggestions interactsInfo;
 
 
 
@@ -40,8 +40,8 @@ public class Suggestions : MonoBehaviour
 	{
 		//info is the only child of command_text
 
-        this.info = GameObject.Find("command_text").transform.GetChild(0).gameObject;
-        this.infoText = this.info.GetComponent<Text>();
+        this.info = GameObject.Find("suggestions_text").transform.GetChild(0).gameObject;
+        this.infosText = this.info.GetComponent<Text>();
 
 	}
 
@@ -50,17 +50,17 @@ public class Suggestions : MonoBehaviour
 	{
         
 
-		this.infoText.color = Color.white;
+		this.infosText.color = Color.white;
         
 		this.origin = new Vector2(0,0);
         //set a font
-        this.infoText.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
+        this.infosText.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
         //set overflow to true and word-wrapping to false
-        this.infoText.fontSize = 40;
-        this.infoText.horizontalOverflow = HorizontalWrapMode.Overflow;
-        this.infoText.verticalOverflow = VerticalWrapMode.Overflow;
-        this.infoText.resizeTextForBestFit = false;
-        this.infoText.resizeTextMaxSize = 0;
+        this.infosText.fontSize = 40;
+        this.infosText.horizontalOverflow = HorizontalWrapMode.Overflow;
+        this.infosText.verticalOverflow = VerticalWrapMode.Overflow;
+        this.infosText.resizeTextForBestFit = false;
+        this.infosText.resizeTextMaxSize = 0;
         
 	}
 
@@ -71,8 +71,8 @@ public class Suggestions : MonoBehaviour
 		this.info.transform.position = this.origin;
 		base.StartCoroutine(this.showInfo());
 		base.StartCoroutine(this.moveInfo());
-		this.infoText.color = col;
-		this.infoText.text = msg;
+		this.infosText.color = col;
+		this.infosText.text = msg;
 	}
 
 	// Token: 0x06000525 RID: 1317 RVA: 0x00046A3A File Offset: 0x00044E3A
@@ -101,18 +101,18 @@ public class Suggestions : MonoBehaviour
 	private IEnumerator showInfo()
 	{
 		yield return new WaitForSeconds(this.timer);
-		Color fader = this.infoText.color;
+		Color fader = this.infosText.color;
 		fader.a -= 0.25f;
-		this.infoText.color = fader;
+		this.infosText.color = fader;
 		yield return new WaitForSeconds(0.05f);
 		fader.a -= 0.25f;
-		this.infoText.color = fader;
+		this.infosText.color = fader;
 		yield return new WaitForSeconds(0.05f);
 		fader.a -= 0.25f;
-		this.infoText.color = fader;
+		this.infosText.color = fader;
 		yield return new WaitForSeconds(0.05f);
 		fader.a -= 0.25f;
-		this.infoText.color = fader;
+		this.infosText.color = fader;
 		yield break;
 	}
 
