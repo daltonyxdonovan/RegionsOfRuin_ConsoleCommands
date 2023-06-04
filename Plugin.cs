@@ -1021,6 +1021,34 @@ namespace RegionsOfRuin_ConsoleCommands
                     }
                 }
             }
+        
+            string[] textToDisplay = suggestionsText.text.Split();
+            if (textToDisplay.Length > 1)
+            {
+                if (textToDisplay[0] == "/help")
+                {
+                    for (int i = 0; i < commands_noslash.Length; i++)
+                    {
+                        if (textToDisplay[1] != "" && textToDisplay[1] != " " && commands_noslash[i].StartsWith(textToDisplay[1].ToString()))
+                        {
+                            suggestionsText.text = suggestionsText.text + " " + commands_noslash[i];
+                        }
+                    }
+                }
+                
+            }
+            else if (textToDisplay.Length == 1)
+            {
+                for (int i = 0; i < commands_slash.Length; i++)
+                {
+                    if (textToDisplay[0] != "" && textToDisplay[0] != " " && commands_slash[i].StartsWith(textToDisplay[0].ToString()))
+                    {
+                        suggestionsText.text = suggestionsText.text + " " + commands_slash[i];
+                    }
+                }
+            }
+
+            
         }
         
         public static void ResetDwarf()
