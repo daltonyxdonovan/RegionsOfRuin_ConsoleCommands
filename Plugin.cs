@@ -33,8 +33,8 @@ namespace RegionsOfRuin_ConsoleCommands
         bool nowounds = false;
         customInteractInfo interactionInfo;
         Suggestions suggestions;
-        string[] commands_slash = new string[] { "/help", "/moon", "/sun", "/strength", "/dexterity", "/constitutions", "/addmoney", "/addxp", "/addworker", "/settime", "/setxp", "/setmaxhp", "/sethp", "/setlvl", "/setrep", "/setcap", "/achget", "/unlockhard", "/heal", "/nowounds", "shieldcondition", "/shieldconditionmax", "/weaponweight", "/wornmindamage", "/wornmaxdamage", "/devtools", "/timeup", "/timedown", "/kill", "/chest", "/flip", "/kit", "/giveall"};
-        string[] commands_noslash = new string[] { "help", "moon", "sun", "strength", "dexterity", "constitutions", "addmoney", "addxp", "addworker", "settime", "setxp", "setmaxhp", "sethp", "setlvl", "setrep", "setcap", "achget", "unlockhard", "heal", "nowounds", "shieldcondition", "shieldconditionmax", "weaponweight", "wornmindamage", "wornmaxdamage", "devtools", "timeup", "timedown", "kill", "chest", "flip", "kit", "giveall"};
+        string[] commands_slash = new string[] { "/help", "/moon", "/sun", "/strength", "/dexterity", "/constitution", "/addmoney", "/addxp", "/addworker", "/settime", "/setxp", "/setmaxhp", "/sethp", "/setlvl", "/setrep", "/setcap", "/achget", "/unlockhard", "/heal", "/nowounds", "shieldcondition", "/shieldconditionmax", "/weaponweight", "/wornmindamage", "/wornmaxdamage", "/devtools", "/timeup", "/timedown", "/kill", "/chest", "/flip", "/kit", "/giveall"};
+        string[] commands_noslash = new string[] { "help", "moon", "sun", "strength", "dexterity", "constitution", "addmoney", "addxp", "addworker", "settime", "setxp", "setmaxhp", "sethp", "setlvl", "setrep", "setcap", "achget", "unlockhard", "heal", "nowounds", "shieldcondition", "shieldconditionmax", "weaponweight", "wornmindamage", "wornmaxdamage", "devtools", "timeup", "timedown", "kill", "chest", "flip", "kit", "giveall"};
         
         // Token: 0x04000C39 RID: 3129
         //dev helm
@@ -283,7 +283,7 @@ namespace RegionsOfRuin_ConsoleCommands
                     suggestions = suggestions_text.GetComponentInChildren<Suggestions>();
 
                     interactionInfo.infoText.text = "Press / for commands";
-                    suggestions.infosText.text = "Suggestions: ";
+                    suggestions.infosText.text = "";
 
                     popup_timer = 99999;
 
@@ -346,8 +346,8 @@ namespace RegionsOfRuin_ConsoleCommands
                     float textWidth = command_text.GetComponentInChildren<customInteractInfo>().infoText.GetComponent<RectTransform>().rect.width;
                     command_text.transform.position = new Vector3(0, 0, 0);
                     suggestions_text.transform.position = new Vector3(0, 0, 0);
-                    command_text.transform.localPosition = new Vector3(-200,-500,0);
-                    suggestions_text.transform.localPosition = new Vector3(-180, -460, 0);
+                    command_text.transform.localPosition = new Vector3(-200,-540,0);
+                    suggestions_text.transform.localPosition = new Vector3(-800, -500, 0);
                     //command_text.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 400);
                     //if canvas isn't null, we can attempt to access values and stuff, but it's still unsafe in title without a check
                     if (popup_timer > 0)
@@ -1026,11 +1026,13 @@ namespace RegionsOfRuin_ConsoleCommands
                 }
             }
         
-            string[] textToDisplay = suggestions_text.GetComponentInChildren<Suggestions>().infosText.text.Split();
+            string[] textToDisplay = command_text.GetComponentInChildren<customInteractInfo>().infoText.text.Split();
+            //Log("textToDisplay: " + textToDisplay[0]);
             if (textToDisplay.Length > 1)
             {
-                if (textToDisplay[0] == "/help")
+                if (textToDisplay[0]=="/help")
                 {
+                    suggestions_text.GetComponentInChildren<Suggestions>().infosText.text = "";
                     for (int i = 0; i < commands_noslash.Length; i++)
                     {
                         if (textToDisplay[1] != "" && textToDisplay[1] != " " && commands_noslash[i].StartsWith(textToDisplay[1].ToString()))
@@ -1041,11 +1043,21 @@ namespace RegionsOfRuin_ConsoleCommands
                             
                         }
                     }
+
+                    if (Input.GetKeyDown(KeyCode.Tab)) 
+                    {
+                        string[] strings = suggestions_text.GetComponentInChildren<Suggestions>().infosText.text.Split();
+                        string first_word = "/help";
+                        string needed_word = strings[0].ToString();
+                        command_text.GetComponentInChildren<customInteractInfo>().infoText.text = first_word + " " + needed_word;
+                        popup_timer = 400;
+                    }
                 }
                 
             }
             else if (textToDisplay.Length == 1)
             {
+                suggestions_text.GetComponentInChildren<Suggestions>().infosText.text = "";
                 for (int i = 0; i < commands_slash.Length; i++)
                 {
                     if (textToDisplay[0] != "" && textToDisplay[0] != " " && commands_slash[i].StartsWith(textToDisplay[0].ToString()))
@@ -1053,6 +1065,17 @@ namespace RegionsOfRuin_ConsoleCommands
                         suggestions_text.GetComponentInChildren<Suggestions>().infosText.color = Color.white;
                         suggestions_text.GetComponentInChildren<Suggestions>().infosText.text = suggestions_text.GetComponentInChildren<Suggestions>().infosText.text + " " + commands_slash[i];
                     }
+                }
+
+                //autocomplete for first word
+                if (Input.GetKeyDown(KeyCode.Tab))
+                {
+                    string[] strings = suggestions_text.GetComponentInChildren<Suggestions>().infosText.text.Split();
+                    
+                    string needed_word = suggestions_text.GetComponentInChildren<Suggestions>().infosText.text.Split()[0].ToString();
+                    command_text.GetComponentInChildren<customInteractInfo>().infoText.text = needed_word;
+                    popup_timer = 400;
+                    
                 }
             }
 
